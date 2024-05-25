@@ -1,0 +1,17 @@
+{
+  "name": "out-fit",
+  "version": "1.0.0",
+  "description": "1. (ML) M004D4KY2142 - Adnan Alamsyah- Sepuluh Nopember Institute of Technology\r 2. (ML) M004D4KY1604 - Maulana Arif - Sepuluh Nopember Institute of Technology\r 3. (ML) M120D4KX3273 - Salsa Diniarti – Telkom Institute of Technology Purwokerto\r 4. (CC) C120D4KY1241 – Yuwan Cornelius – Telkom Institute of Technology Purwokerto\r 5. (CC) C004D4KX0604 - Wardatul Amalia Safitri  - Sepuluh Nopember Institute of Technology\r 6. (MD) A228D4KY4229 - Aaz Zazri Nugraha - Jenderal Achmad Yani University\r 7. (MD) A409D4KY3565 - Stefanus Cecilio Andika Adi Setiawan - Yos Sudarso College of Computer Science",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.1"
+  }
+}
