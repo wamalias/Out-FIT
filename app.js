@@ -1,8 +1,16 @@
 const express = require('express'); 
+
+const myRoute = require('./routes.js'); 
   
 const app = express(); 
 const PORT = 3000; 
+
+// Middlewares 
+app.use(express.json()); 
   
+// Routes will be written here 
+app.use('/', myRoute);  
+
 app.listen(PORT, (error) =>{ 
     if(!error) 
         console.log("Server is Successfully Running, and App is listening on port "+ PORT) 
