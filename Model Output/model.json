@@ -1,0 +1,243 @@
+{
+    "description": "MLIR Converted.",
+    "version": 3,
+    "subgraphs": [
+        {
+            "tensors": [
+                {
+                    "name": "serving_default_conv2d_16_input:0",
+                    "shape": [
+                        1,
+                        150,
+                        150,
+                        3
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_16/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        32
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_17/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        64
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_18/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_19/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_16/Conv2D",
+                    "shape": [
+                        32,
+                        3,
+                        3,
+                        3
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_17/Conv2D",
+                    "shape": [
+                        64,
+                        3,
+                        3,
+                        32
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_18/Conv2D",
+                    "shape": [
+                        128,
+                        3,
+                        3,
+                        64
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_19/Conv2D",
+                    "shape": [
+                        128,
+                        3,
+                        3,
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/dense_8/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        9
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/dense_7/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        512
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/flatten_4/Const",
+                    "shape": [
+                        2
+                    ],
+                    "type": 2
+                },
+                {
+                    "name": "sequential_3/dense_7/MatMul",
+                    "shape": [
+                        512,
+                        6272
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/dense_8/MatMul",
+                    "shape": [
+                        9,
+                        512
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_16/Relu;sequential_3/conv2d_16/BiasAdd;sequential_3/conv2d_16/Conv2D;sequential_3/conv2d_16/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        1,
+                        148,
+                        148,
+                        32
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/max_pooling2d_16/MaxPool",
+                    "shape": [
+                        1,
+                        74,
+                        74,
+                        32
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_17/Relu;sequential_3/conv2d_17/BiasAdd;sequential_3/conv2d_17/Conv2D;sequential_3/conv2d_17/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        1,
+                        72,
+                        72,
+                        64
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/max_pooling2d_17/MaxPool",
+                    "shape": [
+                        1,
+                        36,
+                        36,
+                        64
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_18/Relu;sequential_3/conv2d_18/BiasAdd;sequential_3/conv2d_19/Conv2D;sequential_3/conv2d_18/Conv2D;sequential_3/conv2d_18/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        1,
+                        34,
+                        34,
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/max_pooling2d_18/MaxPool",
+                    "shape": [
+                        1,
+                        17,
+                        17,
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/conv2d_19/Relu;sequential_3/conv2d_19/BiasAdd;sequential_3/conv2d_19/Conv2D;sequential_3/conv2d_19/BiasAdd/ReadVariableOp",
+                    "shape": [
+                        1,
+                        15,
+                        15,
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/max_pooling2d_19/MaxPool",
+                    "shape": [
+                        1,
+                        7,
+                        7,
+                        128
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/flatten_4/Reshape",
+                    "shape": [
+                        1,
+                        6272
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/dense_7/MatMul;sequential_3/dense_7/Relu;sequential_3/dense_7/BiasAdd",
+                    "shape": [
+                        1,
+                        512
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "sequential_3/dense_8/MatMul;sequential_3/dense_8/BiasAdd",
+                    "shape": [
+                        1,
+                        9
+                    ],
+                    "type": 0
+                },
+                {
+                    "name": "StatefulPartitionedCall:0",
+                    "shape": [
+                        1,
+                        9
+                    ],
+                    "type": 0
+                }
+            ],
+            "inputs": [
+                0
+            ],
+            "outputs": [
+                25
+            ]
+        }
+    ]
+}
