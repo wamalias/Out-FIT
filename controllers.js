@@ -1,5 +1,9 @@
-const { response } = require("express");
-
+const { res } = require("express");
+const { 
+    loadModel, 
+    predict, 
+    store_data, 
+    fetch_data } = require('./predict');
 //Local Database
 const profileAccount = [];
 
@@ -8,9 +12,35 @@ const welcomePage = (req, res)=>{
     res.send("Hello, Welcome to our Page"); 
 } 
 
-const postImageMethod = (req, res)=>{ 
-    res.send("Hello, Post Image Request"); 
-} 
+//INI BELUM DITES SAMA SEKALI
+//AKU CUMA NGUMPULIN FUNGSI DARI REFERENSI
+const postImageMethod = async (req, res)=>{ 
+    const { image } = req.payload;
+    const outfit_type = await predictOutfit(image);
+    const outfit_color = await detectColors(image)
+    
+    let id, createdAt, code;  
+    id = crypto.randomUUID();
+    createdAt = new Date().toISOString();
+
+    const data = {
+        id: id,
+        type: outfit_type,
+        color: outfit_color,
+        createdAt: createdAt,
+    }
+    
+    await store_data(data);
+
+    const response = h.response ({
+        status: "success",
+        message: "Model is predicted successfully",
+        data: data,
+    })
+
+    response.code(201);
+    return response;
+}; 
 
 const getWeeklyRecommendationMethod = (req, res)=>{ 
     res.send("Hello, Get Weekly Recommendation Request"); 
