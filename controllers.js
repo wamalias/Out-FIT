@@ -12,8 +12,6 @@ const welcomePage = (req, res)=>{
     res.send("Hello, Welcome to our Page"); 
 } 
 
-//INI BELUM DITES SAMA SEKALI
-//AKU CUMA NGUMPULIN FUNGSI DARI REFERENSI
 const postImageMethod = async (req, res)=>{ 
     const { image } = req.payload;
     const outfit_type = await predictOutfit(image);
@@ -29,7 +27,7 @@ const postImageMethod = async (req, res)=>{
         color: outfit_color,
         createdAt: createdAt,
     }
-    
+
     await store_data(data);
 
     const response = h.response ({

@@ -1,6 +1,3 @@
-//INI BELUM DITES SAMA SEKALI
-//AKU CUMA NGUMPULIN FUNGSI DARI REFERENSI
-
 const tfjs = require('@tensorflow/tfjs-node');
 const {Firestore} = require("@google-cloud/firestore");
 
