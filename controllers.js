@@ -1,9 +1,10 @@
 const { res } = require("express");
 const { 
-    loadModel, 
-    predict, 
+    predictOutfit,
+    detectColors, 
     store_data, 
     fetch_data } = require('./predict');
+
 //Local Database
 const profileAccount = [];
 
@@ -13,11 +14,12 @@ const welcomePage = (req, res)=>{
 } 
 
 const postImageMethod = async (req, res)=>{ 
-    const { image } = req.payload;
+    console.log(req.body);
+    const { image } = req.body;
     const outfit_type = await predictOutfit(image);
     const outfit_color = await detectColors(image)
     
-    let id, createdAt, code;  
+    let id, createdAt;  
     id = crypto.randomUUID();
     createdAt = new Date().toISOString();
 
@@ -48,8 +50,12 @@ const getOutfitRecommendationMethod = (req, res)=>{
     res.send("Hello, Get Outfit Recommendation Request"); 
 } 
 
-const getHistoryMethod = (req, res)=>{ 
-    res.send("Hello, Get History Request"); 
+const getHistoryMethod = async (req, res)=>{ 
+    const data = await fetch_data();
+    return ({
+        status: "success",
+        data: data
+    });
 } 
 
 const getProfileMethod = (req, res)=>{ 
@@ -72,8 +78,8 @@ const getProfileMethod = (req, res)=>{
 const postProfileMethod = async (req, res)=>{ 
     const { email, name } = req.body;
     
-    if (!name || !email) {
-        return res.status(400).json({ error: 'Name is missing' });
+    if (!email) {
+        return res.status(400).json({ error: 'Email is missing' });
     }
 
     const index = profileAccount.findIndex((Account) => Account.email === email);
@@ -92,8 +98,7 @@ const postProfileMethod = async (req, res)=>{
     const id = nanoid(16);
     const newAccount = {
         id,
-        email,
-        name
+        email
     };
 
     profileAccount.push(newAccount);

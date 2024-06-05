@@ -1,5 +1,7 @@
-const tfjs = require('@tensorflow/tfjs-node');
+const tfjs = require('@tensorflow/tfjs');
 const {Firestore} = require("@google-cloud/firestore");
+const path = require('path');
+const fs = require('fs');
 
 types_dict = ['Blazer', 'Dress', 'Jacket', 'Pants', 'Shirt', 'Short', 'Skirt', 'Top', 'Tshirt']
 
@@ -117,7 +119,7 @@ function detectColors(imageData) {
 
 async function predictOutfit(img) {
   model = loadModel();
-
+  console.log(img);
   const tensor = tfjs.node
     .decodeJpeg(img)
     .resizeNearestNeighbor([150, 150])
@@ -137,9 +139,7 @@ async function predictOutfit(img) {
 
 module.exports = {
     predictOutfit,
-    detectColors,
-    loadModel, 
-    predict, 
+    detectColors, 
     store_data, 
     fetch_data
 };
