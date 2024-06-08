@@ -119,9 +119,10 @@ function detectColors(imageData) {
 
 async function predictOutfit(img) {
   model = loadModel();
-  console.log(img);
+  //console.log(img);
+  const imgBuffer = fs.readFileSync(img);
   const tensor = tfjs.node
-    .decodeJpeg(img)
+    .decodeImage(imgBuffer)
     .resizeNearestNeighbor([150, 150])
     .toFloat()
     .div(tf.scalar(255.0))

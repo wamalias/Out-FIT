@@ -4,6 +4,8 @@ const {
     detectColors, 
     store_data, 
     fetch_data } = require('./predict');
+const path = require('path');
+const fs = require('fs');
 
 //Local Database
 const profileAccount = [];
@@ -14,10 +16,14 @@ const welcomePage = (req, res)=>{
 } 
 
 const postImageMethod = async (req, res)=>{ 
-    console.log(req.body);
-    const { image } = req.body;
-    const outfit_type = await predictOutfit(image);
-    const outfit_color = await detectColors(image)
+    if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+    const fileName = req.file.filename;
+    const img = path.join(__dirname, 'upload', fileName);
+    console.log(img);
+    const outfit_type = await predictOutfit(img);
+    const outfit_color = await detectColors(img)
     
     let id, createdAt;  
     id = crypto.randomUUID();

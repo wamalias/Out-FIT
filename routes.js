@@ -1,14 +1,20 @@
 const { Router } = require('express'); 
 const myController = require('./controllers.js'); 
 const multer = require('multer');
-  
+const path = require('path');
+
 const router = Router(); 
 
-const storage = multer.memoryStorage();
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 1000000 }, // 1MB
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'upload/'); // Uploads will be stored in the 'uploads' directory
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); // Unique filename to avoid overwriting
+    }
 });
+
+const upload = multer({storage: storage});
 
 // Requests  
 router.get('/', myController.welcomePage); 
