@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
-import keras as krs
+from tensorflow.keras.preprocessing import image
 import numpy as np
 import requests
 import tensorflow as tf
@@ -11,6 +11,8 @@ IMAGEDIR = "images/"
 
 # Dictionary for mapping class indices to labels
 types_dict = ['Blazer', 'Dress', 'Jacket', 'Pants', 'Shirt', 'Short', 'Skirt', 'Top', 'Tshirt']
+
+app = FastAPI()
 
 # URL of the model in cloud storage
 url = 'https://storage.googleapis.com/model-outfit/fashion_classifier_model.h5'
@@ -29,19 +31,23 @@ else:
 # Load the model
 model = tf.keras.models.load_model(local_path)
 
-# Use the model
-# print(model.summary())
-
-app = FastAPI()
-
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
-@app.post("/detectColors")
-def detect_colors(file: UploadFile = File(...)):
-    img = tf.keras.utils.load_img(file.filename, target_size=(150, 150))
-    input_image = cv2.imread(img)
+@app.post("/detectColor")
+async def detect_colors(file: UploadFile = File(...)):
+    file.filename = f"{uuid.uuid4()}.jpg"
+    #print(file.filename)
+    contents = await file.read()
+
+    # Save file
+    with open(f"{IMAGEDIR}{file.filename}", "wb") as f:
+        f.write(contents)
+
+    # Lakukan prediksi
+    input_image = cv2.imread(f"{IMAGEDIR}{file.filename}")
+    
     # Convert image to HSV
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
@@ -119,12 +125,20 @@ def detect_colors(file: UploadFile = File(...)):
                 y_pos = y - 10 if y - 10 > 10 else y + 20
                 cv2.putText(input_image, color_text, (x + w + 10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_code, 2)
 
-    return input_image, detected_colors
+    return detected_colors
 
 @app.post("/detectOutfit")
-async def predict_outfit(file: UploadFile = File(...)):
+async def predict_outfit(file: UploadFile = File(...)):    
+    file.filename = f"{uuid.uuid4()}.jpg"
+    #print(file.filename)
+    contents = await file.read()
+
+    # Save file
+    with open(f"{IMAGEDIR}{file.filename}", "wb") as f:
+        f.write(contents)
+
     # Lakukan prediksi
-    img = tf.keras.utils.load_img(file.filename, target_size=(150, 150))
+    img = image.load_img(f"{IMAGEDIR}{file.filename}", target_size=(150, 150))
     img_array = tf.keras.utils.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0) / 255.0
 
