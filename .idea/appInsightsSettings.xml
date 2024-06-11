@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.capstone.out_fit" />
+                  <option name="mobileSdkAppId" value="1:951557262557:android:6a90b00e75fd9d073b5f34" />
+                  <option name="projectId" value="out-fit-app" />
+                  <option name="projectNumber" value="951557262557" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

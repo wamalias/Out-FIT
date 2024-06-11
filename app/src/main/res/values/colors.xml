@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!--    Light Theme Colors Style    -->
+    <color name="ylmn_blue">#455478</color>
+    <color name="alice_blue">#E2E6EE</color>
+    <color name="anti_flash_white">#F0F2F7</color>
+    <color name="gunmetal">#272E3F</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00FFFFFF</color>
+
 </resources>

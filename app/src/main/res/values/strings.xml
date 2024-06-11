@@ -1,3 +1,47 @@
 <resources>
-    <string name="app_name">Out-Fit</string>
+    <string name="app_name">Out-Fit App</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="sign_in">Sign In with Google</string>
+
+    <string name="welcome_back">Hi, Welcome back</string>
+    <string name="name_profile">Stefanus Cecilio</string>
+    <string name="email">stefanuscecilio@gmail.com</string>
+    <string name="outfit_recomendation">Outfit Recomendation</string>
+    <string name="galery">Galery</string>
+    <string name="camera">Camera</string>
+    <string name="detail_text">Detail</string>
+
+    <string name="ic_home">Home</string>
+    <string name="ic_history">History</string>
+    <string name="ic_profile">Profile</string>
+
+    <string name="scanning_page">Scanning</string>
+    <string name="identified_result">Identified Result</string>
+    <string name="label">T-Shirt</string>
+    <string name="identified_text">Identifikasi warna telah berhasil. Jenis outfit setelah di identifikasi adalah T-Shirt.</string>
+    <string name="other_recomendation">Other Recomendation</string>
+    <string name="back">Back</string>
+
+    <string name="detail_page">Detail</string>
+    <string name="description">Description</string>
+    <string name="description_text">Carbonite web goalkeeper gloves are ergonomically designed to give easy fit</string>
+    <string name="color_1">Golden</string>
+    <string name="color_2">White</string>
+    <string name="color_3">Black</string>
+    <string name="color_4">Green</string>
+
+    <string name="history_list">List History</string>
+    <string name="history_text">History</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="stefanus_cecilio">Stefanus Cecilio</string>
+
+
 </resources>

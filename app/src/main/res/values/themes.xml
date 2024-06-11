@@ -2,7 +2,21 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.OutFit" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/ylmn_blue</item>
+        <item name="colorSecondary">@color/alice_blue</item>
+        <item name="background">@color/anti_flash_white</item>
+    </style>
+
+    <style name="SignButton" parent="">
+        <item name="android:paddingTop">@dimen/btn_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/btn_padding_vertical</item>
+        <item name="android:layout_marginBottom">50dp</item>
+
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:textSize">@dimen/nm_size</item>
+        <item name="android:textColor">@color/ylmn_blue</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="backgroundTint">@color/anti_flash_white</item>
     </style>
 
     <style name="Theme.OutFit" parent="Base.Theme.OutFit" />

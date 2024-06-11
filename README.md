@@ -12,3 +12,8 @@
 
 ### Project Scope
 Developing a fashion recommendation application which is interactive, useful, and user-friendly for colour blind people
+
+### Flow project
+1. Buat UI
+2. Buat kodingan login
+3. Buat menu navigation

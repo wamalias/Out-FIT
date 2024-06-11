@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -15,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -33,6 +35,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -42,7 +48,18 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.auth.ktx)
 }
