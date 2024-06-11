@@ -13,7 +13,13 @@
 ### Project Scope
 Developing a fashion recommendation application which is interactive, useful, and user-friendly for colour blind people
 
-### Flow project
-1. Buat UI
-2. Buat kodingan login
-3. Buat menu navigation
+### Flow project mobile dev
+1. Membuat UI/UX designer ☑️
+2. Membuat fitur signIn menggunakan Firebase authenntification ☑️
+3. Membuat fitur bottom navigation
+4. Membuat fitur home
+5. Membuat fitur intent camera
+6. Membuat recyclerView untuk menampilkan outfit recomendation
+7. Membuat fitur history
+8. Membuat recyclerView untuk menampilkan historical activity user
+9. Membuat fitur profile dan signOut
