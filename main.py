@@ -31,6 +31,12 @@ else:
 # Load the model
 model = tf.keras.models.load_model(local_path)
 
+def create_outfit_mask(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    _, binary = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    return binary
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
@@ -48,85 +54,73 @@ async def detect_colors(file: UploadFile = File(...)):
     # Lakukan prediksi
     input_image = cv2.imread(f"{IMAGEDIR}{file.filename}")
     
+    # Create outfit mask
+    outfit_mask = create_outfit_mask(input_image)
+    
     # Convert image to HSV
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
     # Define color ranges in HSV
-    red_lower = np.array([0, 50, 50])
-    red_upper = np.array([10, 255, 255])
-    blue_lower = np.array([110, 50, 50])
-    blue_upper = np.array([130, 255, 255])
-    yellow_lower = np.array([20, 100, 100])
-    yellow_upper = np.array([30, 255, 255])
-    green_lower = np.array([50, 50, 50])
-    green_upper = np.array([70, 255, 255])
-    black_lower = np.array([0, 0, 0])
-    black_upper = np.array([180, 255, 30])
-    white_lower = np.array([0, 0, 200])
-    white_upper = np.array([180, 20, 255])
-    gray_lower = np.array([0, 0, 50])
-    gray_upper = np.array([180, 20, 200])
-    brown_lower = np.array([10, 100, 20])
-    brown_upper = np.array([20, 255, 200])
+    color_ranges = {
+        "Red": ([0, 100, 100], [10, 255, 255]),  # Lower range for red
+        "Red": ([160, 100, 100], [180, 255, 255]),  # Higher range for red (because red wraps around in HSV)
+        "Blue": ([90, 100, 70], [130, 255, 255]),  # Adjusted range for dark blue
+        "Yellow Bright": ([20, 100, 100], [30, 255, 255]),  # Bright yellow range
+        "Yellow Dark": ([20, 100, 50], [30, 255, 255]),  # Dark yellow range
+        "Green Dark": ([40, 100, 70], [80, 255, 255]),  # Dark green range
+        "Green Light": ([40, 100, 100], [80, 255, 255]),  # Light green range
+        "Pink": ([140, 100, 200], [170, 255, 255]),  # Adjusted range for bright pink
+        "Purple": ([130, 50, 100], [150, 255, 255]),  # Adjusted range for light purple
+        "Brown": ([10, 100, 50], [20, 255, 150]),  # Adjusted range for dark brown
+        "Black": ([0, 0, 0], [180, 50, 30]),  # Narrowed range for black
+        "White": ([0, 0, 230], [180, 20, 255]),  # Adjusted range for bright white
+        "Grey": ([0, 0, 90], [180, 20, 200]),  # Narrowed range for grey
+        "Cream": ([20, 100, 200], [40, 50, 255])  # Adjusted range for cream
+    }
 
-    # Create masks for each color
-    mask_red = cv2.inRange(hsv, red_lower, red_upper)
-    mask_blue = cv2.inRange(hsv, blue_lower, blue_upper)
-    mask_yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
-    mask_green = cv2.inRange(hsv, green_lower, green_upper)
-    mask_black = cv2.inRange(hsv, black_lower, black_upper)
-    mask_white = cv2.inRange(hsv, white_lower, white_upper)
-    mask_gray = cv2.inRange(hsv, gray_lower, gray_upper)
-    mask_brown = cv2.inRange(hsv, brown_lower, brown_upper)
-    # Combine all masks
-    mask_combined = mask_red + mask_blue + mask_yellow + mask_green + mask_black + mask_white + mask_gray + mask_brown
+    detected_colors = set()
+    
+    for color_name, (lower, upper) in color_ranges.items():
+        lower = np.array(lower)
+        upper = np.array(upper)
+        mask = cv2.inRange(hsv, lower, upper)
 
-    # Apply morphology to clean up the masks
-    kernel = np.ones((5, 5), np.uint8)
-    mask_combined = cv2.morphologyEx(mask_combined, cv2.MORPH_CLOSE, kernel)
+        # Apply the outfit mask
+        mask = cv2.bitwise_and(mask, mask, mask=outfit_mask)
 
-    # Find contours
-    contours, _ = cv2.findContours(mask_combined, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # Apply morphology to clean up the mask
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
-    # Draw bounding boxes and labels
-    detected_colors = []
-    for contour in contours:
-        area = cv2.contourArea(contour)
-        if area > 100:
-            x, y, w, h = cv2.boundingRect(contour)
-            color_text = None
-            if mask_red[y + h // 2][x + w // 2] == 255:
-                color_text = "Red"
-                color_code = (0, 0, 255)
-            elif mask_blue[y + h // 2][x + w // 2] == 255:
-                color_text = "BLue"
-                color_code = (255, 0, 0)
-            elif mask_yellow[y + h // 2][x + w // 2] == 255:
-                color_text = "Yellow"
-                color_code = (0, 255, 255)
-            elif mask_green[y + h // 2][x + w // 2] == 255:
-                color_text = "Green"
-                color_code = (0, 255, 0)
-            elif mask_black[y + h // 2][x + w // 2] == 255:
-                color_text = "Black"
-                color_code = (0, 0, 0)
-            elif mask_white[y + h // 2][x + w // 2] == 255:
-                color_text = "White"
-                color_code = (255, 255, 255)
-            elif mask_gray[y + h // 2][x + w // 2] == 255:
-                color_text = "Gey"
-                color_code = (128, 128, 128)
-            elif mask_brown[y + h // 2][x + w // 2] == 255:
-                color_text = "Brown"
-                color_code = (42, 42, 165)
+        # Calculate the total number of pixels for the current color
+        color_pixels = cv2.countNonZero(mask)
 
-            if color_text:
-                detected_colors.append(color_text)
-                y_pos = y - 10 if y - 10 > 10 else y + 20
-                cv2.putText(input_image, color_text, (x + w + 10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_code, 2)
+        # Define the threshold for dominance (e.g., 10% of total image pixels)
+        dominance_threshold = 0.1 * input_image.shape[0] * input_image.shape[1]
 
-    return detected_colors
+        if color_pixels > dominance_threshold:
+            # Draw a large bounding box
+            x, y, w, h = 0, 0, input_image.shape[1], input_image.shape[0]
+            color_code = (0, 0, 0) if color_name == "Black" else (255, 255, 255)
+            cv2.putText(input_image, color_name, (x, y + h // 2), cv2.FONT_HERSHEY_SIMPLEX, 1, color_code, 2)
+            cv2.rectangle(input_image, (x, y), (x + w, y + h), color_code, 2)
+            detected_colors.add(color_name)
+        else:
+            # Draw a small bounding box around detected objects
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            for contour in contours:
+                area = cv2.contourArea(contour)
+                if area > 100:
+                    x, y, w, h = cv2.boundingRect(contour)
+                    detected_colors.add(color_name)
+                    y_pos = y - 10 if y - 10 > 10 else y + 20
+                    color_code = (0, 0, 0) if color_name == "Black" else (255, 255, 255)
+                    cv2.putText(input_image, color_name, (x, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_code, 2)
+                    # Draw bounding box with color matching the detected color
+                    cv2.rectangle(input_image, (x, y), (x + w, y + h), color_code, 2)
 
+    return list(detected_colors)
+                    
 @app.post("/detectOutfit")
 async def predict_outfit(file: UploadFile = File(...)):    
     file.filename = f"{uuid.uuid4()}.jpg"
