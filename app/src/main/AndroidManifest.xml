@@ -16,10 +16,10 @@
         android:theme="@style/Theme.OutFit"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.SignActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.SignActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -11,9 +11,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.capstone.out_fit.R
 import com.capstone.out_fit.databinding.ActivityLoginBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignIn.*
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -22,14 +21,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 class SignActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    lateinit var googleSignInClient: GoogleSignInClient
-    var auth = FirebaseAuth.getInstance()
-
-    override fun onStart() {
-        super.onStart()
-        if (auth.currentUser != null) {
-        }
-    }
+//    @Suppress("DEPRECATION")
+//    private lateinit var googleSignInClient: GoogleSignInClient
+    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,25 +39,28 @@ class SignActivity : AppCompatActivity() {
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
+            .requestProfile()
             .requestEmail()
             .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        val googleSignInClient = getClient(this, gso)
 
         binding.btnSignIn.setOnClickListener {
-            signInGoogle()
+//            signInGoogle()
+            val signIn = googleSignInClient.signInIntent
+            launcher.launch(signIn)
         }
     }
 
-    private fun signInGoogle() {
-        val signIn = googleSignInClient.signInIntent
-        launcher.launch(signIn)
-    }
+//    private fun signInGoogle() {
+//        val signIn = googleSignInClient.signInIntent
+//        launcher.launch(signIn)
+//    }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            val task = getSignedInAccountFromIntent(result.data)
             handleResults(task)
         }
     }
@@ -86,10 +83,11 @@ class SignActivity : AppCompatActivity() {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
 
-                    intent.putExtra("img_profile", account.photoUrl)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("img_profile", account.photoUrl.toString())
                     intent.putExtra("name", account.displayName)
 
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
