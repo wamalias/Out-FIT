@@ -12,3 +12,6 @@
 
 ### Project Scope
 Developing a fashion recommendation application which is interactive, useful, and user-friendly for colour blind people
+
+### About API-Python
+In this project we use 2 type of API, API with Express.Js Framework and API with FastAPI framework. API in Python (FastAPI) is used for interacting with model. This API will be called by Express.Js API to predict outfit type and outfit colors.
