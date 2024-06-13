@@ -30,8 +30,6 @@ async function fetch_data() {
 }
 
 module.exports = {
-    predictOutfit,
-    detectColors, 
     store_data, 
     fetch_data
 };

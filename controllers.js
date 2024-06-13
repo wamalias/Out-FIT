@@ -1,7 +1,5 @@
 const { res } = require("express");
-const { 
-    predictOutfit,
-    detectColors, 
+const {  
     store_data, 
     fetch_data } = require('./predict');
 const path = require('path');
@@ -28,8 +26,8 @@ const postImageMethod = async (req, res)=>{
         const filePath = path.join(__dirname, req.file.path);
         let fileStream = fs.createReadStream(filePath);
 
-        // Call the external API with the uploaded image
-        const outfit_type = await axios({
+        // Call the external API to predict outfit type
+        const outfit_type  = await axios({
             method: 'post',
             url: 'https://api-python-service-y6drvm4jba-et.a.run.app/detectOutfit',
             headers: {
@@ -40,6 +38,10 @@ const postImageMethod = async (req, res)=>{
             }
         });
 
+        // Destructuring return
+        const [predicted_label, confidence_score] = outfit_type.data;
+        
+        // Call the external API to predict outfit color
         fileStream = fs.createReadStream(filePath);
         const outfit_color = await axios({
             method: 'post',
@@ -58,7 +60,8 @@ const postImageMethod = async (req, res)=>{
 
         const dataOutfit = {
             id: id,
-            type: outfit_type.data,
+            type: predicted_label,
+            confidence_score: confidence_score,
             color: outfit_color.data,
             createdAt: createdAt,
         }
