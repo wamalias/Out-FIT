@@ -6,6 +6,9 @@ const {
     fetch_data } = require('./predict');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
+const crypto = require('crypto');
+
 
 //Local Database
 const profileAccount = [];
@@ -17,36 +20,66 @@ const welcomePage = (req, res)=>{
 
 const postImageMethod = async (req, res)=>{ 
     if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-    const fileName = req.file.filename;
-    const img = path.join(__dirname, 'upload', fileName);
-    console.log(img);
-    const outfit_type = await predictOutfit(img);
-    const outfit_color = await detectColors(img)
-    
-    let id, createdAt;  
-    id = crypto.randomUUID();
-    createdAt = new Date().toISOString();
-
-    const data = {
-        id: id,
-        type: outfit_type,
-        color: outfit_color,
-        createdAt: createdAt,
+        return res.status(400).send('No file uploaded.');
     }
 
-    await store_data(data);
+    try {
+        // Read the uploaded file
+        const filePath = path.join(__dirname, req.file.path);
+        let fileStream = fs.createReadStream(filePath);
 
-    const response = h.response ({
-        status: "success",
-        message: "Model is predicted successfully",
-        data: data,
-    })
+        // Call the external API with the uploaded image
+        const outfit_type = await axios({
+            method: 'post',
+            url: 'https://api-python-service-y6drvm4jba-et.a.run.app/detectOutfit',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: {
+                file: fileStream
+            }
+        });
 
-    response.code(201);
-    return response;
-}; 
+        fileStream = fs.createReadStream(filePath);
+        const outfit_color = await axios({
+            method: 'post',
+            url: 'https://api-python-service-y6drvm4jba-et.a.run.app/detectColor',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: {
+                file: fileStream
+            }
+        });
+        
+        let id, createdAt;  
+        id = crypto.randomUUID();
+        createdAt = new Date().toISOString();
+
+        const dataOutfit = {
+            id: id,
+            type: outfit_type.data,
+            color: outfit_color.data,
+            createdAt: createdAt,
+        }
+        
+        // Clean up the uploaded file
+        fs.unlinkSync(filePath);
+
+        //await store_data(dataOutfit);
+
+        res.status(201).json({
+            status: "success",
+            message: "Model is predicted successfully",
+            data: dataOutfit,
+        })
+
+        return res;
+    } catch (error) {
+        console.error('Error calling external API:', error.message);
+        res.status(500).send('Error processing image.');
+    }
+};
 
 const getWeeklyRecommendationMethod = (req, res)=>{ 
     res.send("Hello, Get Weekly Recommendation Request"); 
