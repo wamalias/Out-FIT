@@ -1,5 +1,10 @@
 const {Firestore} = require("@google-cloud/firestore");
 
+const db = new FirestoreClient({
+    projectId: 'projectid',
+    keyFilename: './path_to_key',
+});
+
 async function store_data(data) {
     const db = new Firestore();
     const predictionCollections = db.collection('predictions');
