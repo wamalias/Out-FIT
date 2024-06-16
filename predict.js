@@ -1,13 +1,14 @@
 const {Firestore} = require("@google-cloud/firestore");
 
-const db = new FirestoreClient({
-    projectId: 'projectid',
-    keyFilename: './path_to_key',
+//credentials for firestore
+const db = new Firestore({
+    projectId: 'out-fit-425907',
+    keyFilename: path.join(__dirname, 'firestore-outfit.json')
 });
 
-async function store_data(data) {
-    const db = new Firestore();
-    const predictionCollections = db.collection('predictions');
+//post data to firestore
+async function store_data(userID, data) {
+    const predictionCollections = db.collection('user_predictions').doc(userID).collection('data');
     const dataDoc = await predictionCollections.doc(data.id)
     try{
       await dataDoc.set(data);
@@ -16,10 +17,10 @@ async function store_data(data) {
     }    
 }
 
-async function fetch_data() {
-    const db = new Firestore();
-
-    const predictionCollections = db.collection('predictions');
+//get data from firestore grouped by userId
+//can use for get histories
+async function fetch_data(userID) {
+    const predictionCollections = db.collection('user_predictions').doc(userID).collection('data');
     
     try {
         const snapshot = await predictionCollections.get();

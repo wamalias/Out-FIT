@@ -22,6 +22,8 @@ const postImageMethod = async (req, res)=>{
     }
 
     try {
+        userId = req.params.id;
+
         // Read the uploaded file
         const filePath = path.join(__dirname, req.file.path);
         let fileStream = fs.createReadStream(filePath);
@@ -69,7 +71,7 @@ const postImageMethod = async (req, res)=>{
         // Clean up the uploaded file
         fs.unlinkSync(filePath);
 
-        //await store_data(dataOutfit);
+        await store_data(userId, dataOutfit);
 
         res.status(201).json({
             status: "success",
@@ -93,7 +95,8 @@ const getOutfitRecommendationMethod = (req, res)=>{
 } 
 
 const getHistoryMethod = async (req, res)=>{ 
-    const data = await fetch_data();
+    userId = req.params.id;
+    const data = await fetch_data(userId);
     return ({
         status: "success",
         data: data
