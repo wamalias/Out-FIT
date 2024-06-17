@@ -1,9 +1,10 @@
 const {Firestore} = require("@google-cloud/firestore");
+const path = require('path');
 
 //credentials for firestore
 const db = new Firestore({
     projectId: 'out-fit-425907',
-    keyFilename: path.join(__dirname, 'firestore-outfit.json')
+    keyFilename: path.join(__dirname, 'key-firestore.json')
 });
 
 //post data to firestore
