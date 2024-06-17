@@ -1,7 +1,9 @@
 const { res } = require("express");
 const {  
     store_data, 
-    fetch_data } = require('./predict');
+    fetch_history,
+    store_mix,
+    fetch_recom } = require('./firestore');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
@@ -90,14 +92,19 @@ const getWeeklyRecommendationMethod = (req, res)=>{
     res.send("Hello, Get Weekly Recommendation Request"); 
 } 
 
-const getOutfitRecommendationMethod = (req, res)=>{ 
-    res.send("Hello, Get Outfit Recommendation Request"); 
+const getOutfitRecommendationMethod = async (req, res)=>{ 
+    type = req.params.type;
+    const data = await fetch_recom(type);
+    return res.status(201).json({
+        status: "success",
+        data: data
+    });
 } 
 
 const getHistoryMethod = async (req, res)=>{ 
     userId = req.params.id;
-    const data = await fetch_data(userId);
-    return ({
+    const data = await fetch_history(userId);
+    return res.status(201).json({
         status: "success",
         data: data
     });
@@ -164,6 +171,22 @@ const postProfileMethod = async (req, res)=>{
 const updateProfileMethod = (req, res)=>{ 
     res.send("Hello, Update Profile Request"); 
 } 
+
+const postMixandMatch = (req, res)=>{
+    const { imageURL, types } = req.body;
+    id = crypto.randomUUID();
+
+    const data = {
+        id : id,
+        imageURL: imageURL,
+    };
+    
+    store_mix(types, data);
+    return res.status(200).json({
+        status: 'success',
+        data: data,
+    });
+}
 // Export of all methods as object 
 module.exports = { 
     welcomePage, 
@@ -173,5 +196,6 @@ module.exports = {
     getProfileMethod,
     postImageMethod,
     postProfileMethod,
-    updateProfileMethod
+    updateProfileMethod,
+    postMixandMatch
 }

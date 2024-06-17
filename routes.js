@@ -18,12 +18,13 @@ const upload = multer({storage: storage});
 
 // Requests  
 router.get('/', myController.welcomePage); 
-router.get('/:id/WeeklyRecommendation', myController.getWeeklyRecommendationMethod);
-router.get('/:id/OutfitRecommendation', myController.getOutfitRecommendationMethod);
+router.get('/WeeklyRecommendation', myController.getWeeklyRecommendationMethod);
+router.get('/:type/OutfitRecommendation', myController.getOutfitRecommendationMethod);
 router.get('/:id/History', myController.getHistoryMethod);
 router.get('/:id/Profile', myController.getProfileMethod);
 
 router.post('/:id/PostImage', upload.single('file'), myController.postImageMethod);
+router.post('/PostMixandMatch', upload.single('file'), myController.postMixandMatch);
 router.post('/Profile', myController.postProfileMethod);
 
 router.put('/:id/Profile', myController.updateProfileMethod);

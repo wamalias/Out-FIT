@@ -18,10 +18,36 @@ async function store_data(userID, data) {
     }    
 }
 
+async function store_mix(type, data) {
+    const predictionCollections = db.collection('mixandmatch').doc(type).collection('image');
+    const dataDoc = await predictionCollections.doc(data.id)
+    try{
+      await dataDoc.set(data);
+    } catch(err) {
+      console.log(err.message);
+    }    
+}
+
 //get data from firestore grouped by userId
 //can use for get histories
-async function fetch_data(userID) {
+async function fetch_history(userID) {
     const predictionCollections = db.collection('user_predictions').doc(userID).collection('data');
+    
+    try {
+        const snapshot = await predictionCollections.get();
+        const fetchedData = [];
+        snapshot.forEach(doc => {
+            fetchedData.push(doc.data());
+        });
+        return fetchedData;
+    } catch (err) {
+        console.log(err.message);
+        return [];
+    }
+}
+
+async function fetch_recom(type) {
+    const predictionCollections = db.collection('mixandmatch').doc(type).collection('image');
     
     try {
         const snapshot = await predictionCollections.get();
@@ -38,5 +64,7 @@ async function fetch_data(userID) {
 
 module.exports = {
     store_data, 
-    fetch_data
+    fetch_history,
+    fetch_recom,
+    store_mix
 };
