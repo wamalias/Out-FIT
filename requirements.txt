@@ -1,0 +1,8 @@
+express
+path
+multer
+axios
+fs
+crypto
+@google-cloud/firestore
+@google-cloud/storage
