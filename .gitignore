@@ -2,3 +2,4 @@ node_modules/
 ModelOutput/
 upload/
 key-firestore.json
+gcs-firekey.json

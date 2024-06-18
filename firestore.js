@@ -1,3 +1,10 @@
+/*
+This file is used to interact with Google Cloud Firestore.
+1. Store data to Firestore based on User ID
+2. Fetch history from Firestore based on User ID
+3. Fetch outfit recommendation from Firestore based on outfit type
+*/
+
 const {Firestore} = require("@google-cloud/firestore");
 const path = require('path');
 
@@ -10,16 +17,6 @@ const db = new Firestore({
 //post data to firestore
 async function store_data(userID, data) {
     const predictionCollections = db.collection('user_predictions').doc(userID).collection('data');
-    const dataDoc = await predictionCollections.doc(data.id)
-    try{
-      await dataDoc.set(data);
-    } catch(err) {
-      console.log(err.message);
-    }    
-}
-
-async function store_mix(type, data) {
-    const predictionCollections = db.collection('mixandmatch').doc(type).collection('image');
     const dataDoc = await predictionCollections.doc(data.id)
     try{
       await dataDoc.set(data);
@@ -66,5 +63,4 @@ module.exports = {
     store_data, 
     fetch_history,
     fetch_recom,
-    store_mix
 };
