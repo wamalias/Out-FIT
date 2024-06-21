@@ -7,7 +7,7 @@
     <string name="name_profile">Stefanus Cecilio</string>
     <string name="email">stefanuscecilio@gmail.com</string>
     <string name="outfit_recomendation">Outfit Recomendation</string>
-    <string name="galery">Galery</string>
+    <string name="galery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="detail_text">Detail</string>
 
@@ -43,5 +43,18 @@
     <string name="login_failed">"Login failed"</string>
     <string name="stefanus_cecilio">Stefanus Cecilio</string>
 
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+    <string name="logo_preview">logo_preview</string>
+    <string name="_2024_outfit_team_capstone">2024© OutFit Team Capstone</string>
+    <string name="unknown_user">Unknown user</string>
+    <string name="username">username</string>
+    <string name="logout">Logout</string>
+    <string name="image">image</string>
+    <string name="outfit_name">Outfit Name</string>
+    <string name="detail">Detail</string>
+    <string name="your_id_is_nothing">your id is nothing</string>
+    <string name="your_id">Your ID : %1$s</string>
 </resources>

@@ -5,11 +5,19 @@ plugins {
 }
 
 android {
-    namespace = "com.capstone.out_fit"
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("D:\\Bangkit Batch 1\\Outfit\\app\\keystore\\keystore.jks")
+            storePassword = "12345678"
+            keyAlias = "keystore"
+            keyPassword = "12345678"
+        }
+    }
+    namespace = "com.capstone.outfitapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.capstone.out_fit"
+        applicationId = "com.capstone.outfitapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,9 +43,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -49,17 +57,15 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.play.services.auth)
+
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.play.services.auth)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.auth.ktx)
 }
